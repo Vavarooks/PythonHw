@@ -1,0 +1,19 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container{
+    margin: 0 auto;
+    width: 900px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.box{
+    height: 200px;
+    width: 200px;
+    margin-top: 5px;
+    /* background-color: lightblue; */
+    border: 2px solid black;
+}
