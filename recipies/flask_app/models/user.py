@@ -61,15 +61,11 @@ class Users:
         if len(data['password']) < 1:
             flash("More than one charater please!")
             is_valid = False
-
-        return is_valid
-
-    @staticmethod
-    def validate_user( users ):
-        is_valid = True
-        if not EMAIL_REGEX.match(users['email']): 
+        if not EMAIL_REGEX.match(data['email']): 
             flash("Invalid email address!")
             is_valid = False
-        if not (users['email']):
+        if not (data['email']):
             flash("Email cannot be blank!", 'email')
+
         return is_valid
+        

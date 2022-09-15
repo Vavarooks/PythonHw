@@ -34,13 +34,13 @@
                         </div>
                         <div class="modal-body">
                             {% with messages = get_flashed_messages() %}
-                            {% if messages %}
-                            {% for message in messages %}
+                                {% if messages %}
+                                    {% for message in messages %}
                             <div class="alert alert-warning" role="alert">
                                 <p>{{message}}</p>
                             </div>
-                            {% endfor %}
-                            {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                             {% endwith %}
                             <form method="post" action="/register">
                                 <div class="row">
@@ -132,11 +132,11 @@
     </div>
     <div class="card" style="width: 18rem;">
         <div class="card-body">
-            <h5 class="card-title">Recipe Name: {{}}</h5>
-            <p class="card-text">Recipe Discription: {{}}</p>
+            <h5 class="card-title">Recipe Name: </h5>
+            <p class="card-text">Recipe Discription: </p>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">Recipe Nutritional Value: {{}}</li>
+            <li class="list-group-item">Recipe Nutritional Value: </li>
             <li class="list-group-item">Recipe Instructions</li>
         </ul>
         <div class="card-body">

@@ -7,11 +7,16 @@ bcrypt = Bcrypt(app)
 
 @app.route("/")
 def home():
+    food_list = Recipies.get_all()
     return render_template("home.html")
 
 @app.route("/form")
 def recipe_form():
     return render_template("form.html")
+
+@app.route("/main")
+def userIn():
+    return render_template("loggedin.html")
 
 @app.route("/delete/<int:id>")
 def delete(id):
@@ -70,7 +75,10 @@ def register_user():
         "password": request.form["password"],
         "password_confirm": request.form["password_confirm"],
     }
-
+    # if request.form['logged_in'] == 'loggedIn':
+    #     return redirect("/success")
+    # if request.form['logged_out'] == 'loggedOut':
+    #     return redirect("/logout")
     if not Users.validate(data):
         print("not valid")
         return redirect('/')
