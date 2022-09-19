@@ -7,8 +7,8 @@ bcrypt = Bcrypt(app)
 
 @app.route("/")
 def home():
-    food_list = Recipies.get_all()
-    return render_template("home.html")
+    all_recipies = Recipies.get_all()
+    return render_template("home.html", all_recipies=all_recipies)
 
 @app.route("/form")
 def recipe_form():
@@ -16,24 +16,28 @@ def recipe_form():
 
 @app.route("/main")
 def userIn():
-    return render_template("loggedin.html")
+    all_recipies = Recipies.get_all()
+    return render_template("loggedin.html", all_recipies=all_recipies)
 
-@app.route("/delete/<int:id>")
-def delete(id):
+@app.route("/pantry/<int:id>")
+def veiw_one(id):
     data = {
-        "id" : id
+        "id" : id,
     }
-
-    Recipies.delete(data)
-    return redirect("/")
-
-@app.route("/change/<int:id>")
-def change_info(id):
-    data = {
-        "id" : id
+    if "logged_id" not in session:
+        flash("Log in to veiw!")
+        return redirect("/")
+    one_recipies = Recipies.veiw_one(data)
+    userid = {
+        "id": Recipies.users_id
     }
-    change_recipe = Recipies.get_one(data)
-    return render_template("success.html", change_recipe=change_recipe)
+    operator = {
+        "id": session["logged_id"]
+    }
+    this_user = Users.find_one_by_id(operator)
+    posted_by_this_user = Users.find_one_by_id(userid)
+    print(one_recipies)
+    return render_template("recipeveiw.html", one_recipies=one_recipies,this_user = this_user, posted_by_this_user = posted_by_this_user)
 
 @app.route("/recipies/submit", methods=["post"])
 def submit_recipie():
@@ -43,25 +47,44 @@ def submit_recipie():
         "name" : request.form["name"],
         "instructions" : request.form["instructions"],
         "nutrients" : request.form["nutrients"],
-        "cook" : request.form["cook"]
+        "cook" : request.form["cook"],
+        "users_id" : session["logged_id"]
     }
 
     Recipies.save(data)
 
-    return redirect("/")
+    return redirect("/main")
 
-@app.route("/edited/<int:id>", methods=["post"])
-def edited(id):
+@app.route("/delete/<int:id>")
+def delete(id):
+    data = {
+        "id" : id
+    }
+
+    Recipies.delete(data)
+    return redirect("/main")
+
+@app.route("/change/<int:id>")
+def change_info(id):
+    data = {
+        "id" : id
+    }
+    change_recipe = Recipies.veiw_one(data)
+    print(change_recipe)
+    return render_template("edit.html", recipe=change_recipe)
+
+@app.route("/edited", methods=["post"])
+def edited():
     data ={
-        "id" : id,
+        "id": request.form["id"],
         "name" : request.form["name"],
         "instructions" : request.form["instructions"],
         "nutrients" : request.form["nutrients"],
         "cook" : request.form["cook"],
     }
-    Recipies.edit(data)
     print("Edit")
-    return redirect("/")
+    Recipies.edit(data)
+    return redirect("/main")
 
 @app.route("/register", methods=["post"])
 def register_user():
@@ -75,10 +98,6 @@ def register_user():
         "password": request.form["password"],
         "password_confirm": request.form["password_confirm"],
     }
-    # if request.form['logged_in'] == 'loggedIn':
-    #     return redirect("/success")
-    # if request.form['logged_out'] == 'loggedOut':
-    #     return redirect("/logout")
     if not Users.validate(data):
         print("not valid")
         return redirect('/')
@@ -96,8 +115,10 @@ def success():
     if "logged_id" not in session:
         
         return redirect("/")
-    
-    return render_template("success.html")
+
+    user_recipies = Recipies.veiw_one({"id": session["logged_id"]})
+    # print(user_recipies)
+    return render_template("success.html", user_recipies=user_recipies)
 
 @app.route("/logout")
 def logout():

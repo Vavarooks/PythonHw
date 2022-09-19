@@ -20,7 +20,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <a class="nav-link" href="/form">Recipes</a>
+                <a class="nav-link" href="/form"">Recipes</a>
                 <a class="nav-link" href="/success">Pantry</a>
                 <form class=" d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -30,13 +30,10 @@
             </div>
         </div>
     </nav> 
-    <nav class="navbar bg-light">
-        <div class="container-fluid">
-            <h1>User Pantry</h1>
+        <div class="container d-block w-50 mx-auto my-3">
+            <h1>Recipe Page</h1>
         </div>
-    </nav>
-    <div class="container d-block w-50 mx-auto my-3">
-        {% for recipies in all_recipies %}
+        {% for recipies in one_recipies %}
         <div class="col-sm-4">
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
@@ -48,16 +45,14 @@
                     <li class="list-group-item">Recipe Cook Time: {{recipies.cook}} Minutes</li>
                 </ul>
                 <div class="card-body">
-                    <a href="/pantry/{{recipies.id}}" class="card-link">Veiw</a>
                     {% if session["logged_id"] == recipies.user_id %}
-                        <a  href="/delete/{{recipies.id}}" class="card-link">Delete</a>
-                        <a  href="/change/{{recipies.id}}" class="card-link">Edit</a>
+                    <a  href="/delete/{{recipies.id}}" class="card-link">Delete</a>
+                    <a  href="/change/{{recipies.id}}" class="card-link">Edit</a>
                     {% endif %}
                 </div>
             </div>
         </div>
         {% endfor %}
-    </div>
 
 </body>
 

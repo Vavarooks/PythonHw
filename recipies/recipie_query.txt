@@ -1,4 +1,6 @@
-SELECT * FROM recipes JOIN user ON recipes.users_id = user.id
+SELECT * FROM recipes JOIN users ON recipes.users_id = users.id
 
-insert into recipies(name,nutrients,instructions,cook,created_at,updated_at,user_id)
+insert into recipesusers.recipes(name,nutrients,instructions,cook,created_at,updated_at,users_id)
 VALUE ("Lumpia", 120,"Wrap and Fry", 30, NOW(),NOW(),1)
+
+insert

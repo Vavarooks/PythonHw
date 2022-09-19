@@ -33,6 +33,18 @@ class Users:
 
         return one_instance
 
+    @classmethod
+    def find_one_by_id(cls, data):
+        query = "SELECT * FROM users WHERE id=%(id)s"
+
+        results = connectToMySQL('recipes').query_db(query, data)
+
+        if len(results) == 0:
+            return False
+        
+        one_instance = cls(results[0])
+        return one_instance
+
     @staticmethod
     def validate(data):
         is_valid = True
@@ -66,6 +78,8 @@ class Users:
             is_valid = False
         if not (data['email']):
             flash("Email cannot be blank!", 'email')
-
+        if not EMAIL_REGEX.match(data['email']): 
+            flash("Invalid email address!")
+            is_valid = False
         return is_valid
         
